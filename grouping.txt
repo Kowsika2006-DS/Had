@@ -1,0 +1,40 @@
+Compilation of a java program
+$ javac -classpath $HADOOP_CLASSPATH HitCountMapReduce.java
+Step 2 : Creation of jar file
+$ jar -cvf hc.jar *.class
+Creation of directories
+$ hdfs dfs -mkdir /user/hc
+$ hdfs dfs -mkdir /user/hc/input
+Step 4 : Copying input files from local directory to Hadoop
+$ hadoop fs -copyFromLocal NASA_access_log_Jul95 /user/hc/input
+Step 5 : Executing job in hadoop
+$ hadoop jar hc.jar HitCountMapReduce /user/hc/input
+/user/hc/output
+Step 6 : Copying output files from Hadoop to local directory
+$ hadoop fs -copyToLocal /user/hc/output/*
+Step 7 : Viewing the output file
+$ nano part-r-00000
+
+
+Sample Content of output file : part-r-00000
+//biomed/climate/gif/f16pcfinmed.gif 1
+//biomed/gif/ 1
+//biomed/gif/aerial.gif 1
+//elv/bakgro.gif 2
+//elv/elvhead2.gif 1
+//elv/elvhead3.gif 1
+//elv/elvpage.htm 2
+//elv/endball.gif 1
+//elv/vidpicp.htm 1
+//elv/whnew.htm 1
+//facilities/spaceport.html 1
+//ksc.html 3
+//shuttle/missions/missions.html 4
+//shuttle/missions/sts-70/images/woodpecker-on-et.jpg 1
+/Harvest/ 2
+/Harvest/brokers/WWW/admin/admin.html 3
+/Harvest/brokers/WWW/query.html 27
+/Harvest/brokers/WWW/summary.html 4
+/Harvest/brokers/queryhelp.html 1
+.
+.
