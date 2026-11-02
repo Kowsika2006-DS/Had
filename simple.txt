@@ -1,0 +1,21 @@
+ Compilation of a java program
+$ javac -classpath $HADOOP_CLASSPATH MsgSizeAggregateMapReduce.java
+Step 2 : Creation of jar file
+$ jar -cvf aggregate.jar *.class
+Step 3 : Creation of directories
+$ hdfs dfs -mkdir /user/ag
+$ hdfs dfs -mkdir /user/ag/input
+Step 4 : Copying inputfiles from local directory to Hadoop
+$ hadoop fs -copyFromLocal NASA_access_log_Jul95 /user/ag/input
+Step 5 : Executing job in hadoop
+$ hadoop jar aggregate.jar MsgSizeAggregateMapReduce
+/user/ag/input /user/ag/output
+Step 6 : Copying output files from Hadoop to local directory
+$ hadoop fs -copyToLocal /user/ag/output/*
+Step 7 : Viewing the output file
+$ geidt part-r-00000
+
+Sample Content of output file : part-r-00000
+Mean 1150
+Max 6823936
+Min 0
