@@ -1,0 +1,90 @@
+Update package list
+$ sudo apt-get update -y
+Step 2 : Download and install gunplot
+$ sudo apt-get install -y gnuplot
+Step 1 : Compilation of a java program
+$ javac -classpath $HADOOP_CLASSPATH MsgSizeScatterMapReduce.java
+Step 2 : Creation of jar file
+$ jar -cvf scatter.jar *.class
+Step 3 : Creation of directories
+$ hdfs dfs -mkdir /user/scatter
+$ hdfs dfs -mkdir /user/scatter/input
+Step 4 : Copying input file from local directory to Hadoop
+$ hadoop fs -copyFromLocal NASA_access_log_Jul95
+/user/scatter/input
+Step 5 : Executing job in hadoop
+$ hadoop jar scatter.jar MsgSizeScatterMapReduce
+/user/scatter/input /user/scatter/output 3
+Step 6 : Copying output files from Hadoop to local directory
+$ hadoop fs -copyToLocal /user/scatter/output/*
+Step 7 : 3 output files are created because number of reducer is set to 3 while
+executing the job. View the output files using nano command as follows
+$ nano part-r-00000
+$ nano part-r-00001
+$ nano part-r-00002
+  Step 8 : Create a hitsvsmsgsize.plot file with following settings
+set terminal png
+set output "hitsbymsgsize1.png"
+set title "Hits by Size of the Message";
+set ylabel "Number of Hits";
+set xlabel "Size of the Message (X1000) bytes";
+set key left top
+set log y
+set log x
+plot "part-r-00000" using 1:2 title "2 Node" with points
+Step 9 : Generate the plot by running the following command and It will
+generate a file called hitsbyHour.png ,
+$ gnuplot hitsvsmsgsize.plot
+Step 10 : View hitsbyHour.png using an image viewer [(Eye of Gnome) eog is
+the default image viewer in ubuntu]
+$ eog hitsbymsgsize1.png
+Step 11 : Change input file name in Step 8 as part-r-00001 and output file
+name as hitsbymsgsize2 and repeat Step 9 and 10.
+Step 12 : Change input file name in Step 8 as part-r-00002 and output file
+name as hitsbymsgsize3 and repeat Step 9 and 10.
+
+
+Sample Content of output file : part-r-00000
+0 554526
+3 131824
+6 100802
+9 24774
+12 26328
+15 7243
+18 5608
+21 1555
+24 9527
+27 6008
+30 3621
+.
+.
+.
+Sample Content of output file : part-r-00001
+1 248295
+4 109586
+7 31875
+10 10163
+13 30266
+16 7739
+19 5844
+22 1459
+25 1284
+28 3106
+31 4868
+.
+.
+.
+Sample Content of output file : part-r-00002
+2 57652
+5 74123
+8 33810
+11 51831
+14 10164
+17 33811
+20 7465
+23 1622
+26 2691
+29 6948
+.
+.
+.  
