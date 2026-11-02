@@ -1,0 +1,24 @@
+Executing a WeatherJob MapReduce program in Hadoop
+Step 1 : Compilation of a java program
+$ javac -classpath $HADOOP_CLASSPATH WeatherJob.java
+Creation of jar file
+$ jar -cvf weather.jar *.class
+Step 3 : Creation of directories
+$ hdfs dfs -mkdir /user/weather
+$ hdfs dfs -mkdir /user/weather/input
+Step 4 : Copying inputfiles from local directory to Hadoop
+$ hadoop fs -copyFromLocal 010010-99999-2021.op
+/user/weather/input
+$ hadoop fs -copyFromLocal 010014-99999-2021.op
+/user/weather/input
+Step 5 : Executing job in hadoop
+$ hadoop jar weather.jar WeatherJob /user/weather/input
+/user/weather/output
+Step 6 : Copying output files from Hadoop to local directory
+$ hadoop fs -copyToLocal /user/weather/output/*
+Step 7 : Viewing the output file
+$ nano part-r-00000
+
+Sample Content of output file : part-r-00000
+MAX 999.9
+MIN 9.1
