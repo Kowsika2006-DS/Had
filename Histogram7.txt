@@ -1,0 +1,62 @@
+ Update package list
+$ sudo apt-get update -y
+Step 2 : Download and install gunplot
+$ sudo apt-get install -y gnuplot
+Step 1 : Compilation of a java program
+$ javac -classpath $HADOOP_CLASSPATH
+HistogramGenerationMapReduce.java
+Step 2 : Creation of jar file
+$ jar -cvf histo.jar *.class
+Step 3 : Creation of directories
+$ hdfs dfs -mkdir /user/histo
+$ hdfs dfs -mkdir /user/histo/input
+Step 4 : Copying input file from local directory to Hadoop
+$ hadoop fs -copyFromLocal NASA_access_log_Jul95 /user/histo/input
+Step 5 : Executing job in hadoop
+$ hadoop jar histo.jar HistogramGenerationMapReduce
+/user/histo/input /user/histo/output
+Step 6 : Copying output files from Hadoop to local directory
+$ hadoop fs -copyToLocal /user/histo/output/*
+Step 7 : Viewing the output file
+$ nano part-r-00000
+Step 8 : Create a histobyhour.plot file with following settings
+set terminal png
+set output "hitsobyHour.png"
+set title "Hits by Hour of Day";
+set ylabel "Number of Hits";
+set xlabel "Hour";
+set key left top
+set log y
+plot "part-r-00000" using 1:2 title "2 Node" with linespoints
+Step 9 : Generate the plot by running the following command and It will
+generate a file called hitsbyHour.png ,
+$ gnuplot histobyhour.plot
+Step 10 : View hitsbyHour.png using an image viewer [(Eye of Gnome) eog is
+the default image viewer in ubuntu]
+$ eog hitsbyHour.png
+
+Sample Content of output file : part-r-00000
+0 118413
+1 121372
+2 105636
+3 87193
+4 73699
+5 68237
+6 69308
+7 72662
+8 69303
+9 125652
+10 115723
+11 50487
+12 39158
+13 34285
+14 31350
+15 31985
+16 41805
+17 68593
+18 91563
+19 104110
+20 108600
+21 57652
+22 60208
+23 120279
