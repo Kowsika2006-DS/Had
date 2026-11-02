@@ -1,0 +1,57 @@
+Step 1 : Compilation of a java program
+$ javac -classpath $HADOOP_CLASSPATH WordCount.java
+Step 2 : Creation of jar file
+$ jar -cvf wc.jar *.class
+Step 3 : Creation of directories
+$ hdfs dfs -mkdir /user
+$ hdfs dfs -mkdir /user/wc
+$ hdfs dfs -mkdir /user/wc/input
+Step 4 : Copying inputfiles from local directory to Hadoop
+$ hadoop fs -copyFromLocal wcinput1.txt /user/wc/input
+$ hadoop fs -copyFromLocal wcinput2.txt /user/wc/input
+Step 5 : Executing job in hadoop
+$ hadoop jar wc.jar WordCount /user/wc/input /user/wc/output
+Step 6 : Copying output files from Hadoop to local directory
+$ hadoop fs -copyToLocal /user/wc/output/*
+Step 7 : Viewing the output file
+$ nano part-r-00000
+
+Awfully 1
+Axminster 1
+Ay 1
+Ay! 2
+Ay, 9
+Ay. 4
+Ayes 1
+Azaze, 1
+Azotes. 1
+Aztec 1
+Aztecs, 1
+B 6
+B, 2
+B. 27
+B.) 3
+B., 2
+B.A. 1
+B.C. 1
+BABES 1
+BABY 1
+BALANCE 1
+BANTAM 1
+BARBER: 1
+BARRY: 5
+BATTLES
+BAWD: 8
+1
+BE 1
+BEATITUDES: 1
+BEAUFOY: 4
+BEFORE 1
+BELIEF 1
+BELLA, 2
+BELLA: 23
+BELLHANGER: 1
+BELLINGHAM:
+.
+5
+.
