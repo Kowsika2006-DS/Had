@@ -1,0 +1,10 @@
+start-all.sh
+jps
+cd ~/lab/wc
+javac -classpath "$(hadoop classpath)" WordCount.java
+jar -cvf wc.jar *.class
+hdfs dfs -mkdir -p /user/wc/input
+hadoop fs -copyFromLocal wcinput1.txt /user/wc/input
+hadoop fs -copyFromLocal wcinput2.txt /user/wc/input
+hadoop jar wc.jar WordCount /user/wc/input /user/wc/output
+hdfs dfs -cat /user/wc/output/part-r-00000
